@@ -37,15 +37,13 @@ cmake --install build --config Release
 
 ## INI settings
 
-The plugin supports the following settings in the INI file:
+The plugin supports the following **mandatory** settings in the INI file:
 
 ```ini
 [agents_status]
 silent = true
 sub_topic = ["agent_event"]
 ```
-
-All settings are optional; if omitted, the default values are used.
 
 
 ## Datastore
