@@ -17,8 +17,8 @@
 #include <map>
 #include <nlohmann/json.hpp>
 #include <pugg/Kernel.h>
-#include <sink.hpp>
 #include <rang.hpp>
+#include <sink.hpp>
 
 // other includes as needed here
 
@@ -62,19 +62,23 @@ public:
 
     string status = input["event"] == "startup" ? "ON" : "OFF";
 
-    _agents[name] = json{
-      {"status", status}, 
-      {"host", input["hostname"]},
-      {"time", input["timestamp"]["$date"]},
-      {"offset", input["timecode_offset"]}
-    };
+    _agents[name] = json{{"status", status},
+                         {"host", input["hostname"]},
+                         {"time", input["timestamp"]["$date"]},
+                         {"offset", input["timecode_offset"]}};
 
-    for (int i = 0; i < _agents.size(); i++) {
+    for (int i = 0; i < _agents.size() + 1; i++) {
       // Move cursor up one line
       std::cout << "\x1b[1A";
       // Clear entire line
       std::cout << "\x1b[2K";
     }
+    
+    cout << style::italic << setw(7) << left << "Status" << setw(20) << left
+         << "Agent" << setw(25) << left << "Host" << setw(30) << left
+         << "Timestamp"
+         << "Time offset" << style::reset << endl;
+
     for (auto &[k, v] : _agents) {
       string s = v["status"].get<string>();
       cout << style::bold;
@@ -83,12 +87,11 @@ public:
       } else {
         cout << fg::red;
       }
-      cout << setw(7) << left << v["status"].get<string>() << style::reset 
-           << fg::cyan << setw(20) << left << k 
-           << fg::yellow << setw(25) << left << v["host"].get<string>() 
-           << fg::reset << setw(30) << left << v["time"].get<string>()
-           << v["offset"].get<double>()
-           << fg::reset << endl;
+      cout << setw(7) << left << v["status"].get<string>() << style::reset
+           << fg::cyan << setw(20) << left << k << fg::yellow << setw(25)
+           << left << v["host"].get<string>() << fg::reset << setw(30) << left
+           << v["time"].get<string>() << v["offset"].get<double>() << fg::reset
+           << endl;
     }
 
     return return_type::success;
@@ -102,14 +105,6 @@ public:
     // then merge the defaults with the actually provided parameters
     // params needs to be cast to json
     _params.merge_patch(*(json *)params);
-
-    cout << endl << style::italic
-         << setw(7) << left << "Status"
-         << setw(20) << left << "Agent" 
-         << setw(25) << left << "Host" 
-         << setw(30) << left << "Timestamp" 
-         << "Time offset"
-         << style::reset << endl;
   }
 
   // Implement this method if you want to provide additional information
