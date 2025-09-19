@@ -73,10 +73,18 @@ public:
       // Clear entire line
       std::cout << "\x1b[2K";
     }
+    int agent_length = 0, host_length = 0;
+    for (auto &[k, v] : _agents) {
+      if (k.length() > agent_length) agent_length = k.length();
+      if (v["host"].get<string>().length() > host_length) host_length = v["host"].get<string>().length();
+    }
+    agent_length++;
+    host_length++;
     
-    cout << style::italic << setw(7) << left << "Status" << setw(20) << left
-         << "Agent" << setw(25) << left << "Host" << setw(30) << left
-         << "Timestamp"
+    cout << style::italic << setw(7) << left << "Status" 
+         << setw(agent_length) << left << "Agent" 
+         << setw(host_length) << left << "Host" 
+         << setw(30) << left << "Timestamp"
          << "Time offset" << style::reset << endl;
 
     for (auto &[k, v] : _agents) {
@@ -88,7 +96,8 @@ public:
         cout << fg::red;
       }
       cout << setw(7) << left << v["status"].get<string>() << style::reset
-           << fg::cyan << setw(20) << left << k << fg::yellow << setw(25)
+           << fg::cyan << setw(agent_length) << left << k 
+           << fg::yellow << setw(host_length) 
            << left << v["host"].get<string>() << fg::reset << setw(30) << left
            << v["time"].get<string>() << v["offset"].get<double>() << fg::reset
            << endl;
