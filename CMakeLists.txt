@@ -10,7 +10,8 @@
 # Current working directory: /Users/p4010/Develop/MADS_plugins/agents_plugin
 # Creation date: 2025-09-15T18:12:29.763+0200
 # NOTICE: MADS Version 1.3.5
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.28)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 project(agents VERSION 1.3.5 LANGUAGES CXX)
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
@@ -43,27 +44,30 @@ FetchContent_Declare(pugg
   GIT_REPOSITORY https://github.com/pbosetti/pugg.git
   GIT_TAG        1.0.2
   GIT_SHALLOW    TRUE
+  EXCLUDE_FROM_ALL
 )
 
 set(BUILD_TESTING OFF CACHE INTERNAL "")
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 FetchContent_Declare(json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG        v3.11.3
+  GIT_TAG        v3.12.0
   GIT_SHALLOW    TRUE
+  EXCLUDE_FROM_ALL
 )
 
 FetchContent_Declare(rang
   GIT_REPOSITORY https://github.com/agauniyal/rang.git
-  GIT_TAG HEAD
+  GIT_TAG v3.2
   GIT_SHALLOW TRUE
+  EXCLUDE_FROM_ALL
 )
 
 FetchContent_MakeAvailable(pugg json rang)
 
 FetchContent_Populate(plugin 
   GIT_REPOSITORY https://github.com/pbosetti/mads_plugin.git
-  GIT_TAG        v1.3.5
+  GIT_TAG        v2.0-P7
   GIT_SHALLOW    TRUE
   SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/plugin-subbuild
   SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/plugin-src

@@ -4,8 +4,7 @@ This is a Sink plugin for [MADS](https://github.com/MADS-NET/MADS).
 
 This plugin keeps track of launched agents and of their current status.
 
-*Required MADS version: 1.3.5.*
-
+> This plugin has been updated for MADS v2
 
 ## Supported platforms
 
